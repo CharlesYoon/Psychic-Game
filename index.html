@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> 
+</head>
+<body>
+    <!---add the necessary divs here-->
+    <!--header-->
+    <div class = "container-fluid">
+        <div class = "row">
+            <h1 id = "header">Guess what letter I'm thinking of</h1>
+        </div>
+        <div class = "row">
+            <p>Press any alphabet key</p>
+        </div>
+        <!--scoreboard-->
+        <div class = "row">  
+            <ul>
+                <li id = "wins" style = "float:left;display:block;font-weight:bolder;font-size:medium;">Wins:</li>
+                <li id = "win-counter" style="display:block;float:left;font-size:medium;">0</li>
+            </ul>
+            <!---this is the div to append to for #ofWins & the same for losses-->
+        </div>
+        <div class = "row">
+            <ul>
+                <li id = "losses" style = "float:left;display:block;font-weight:bolder;font-size:medium;">Losses:</li>
+                <li id = "lose-counter" style="display:block;float:left;font-size:medium;">0</li>
+            </ul>
+        </div>
+        <div class = "row">
+            <ul>
+                <li id = "computer" style = "float:left;display:block;font-weight:bolder;font-size:medium;">Computer chose:</li>
+                <li id = "computerChoice" style="display:block;float:left;font-size:medium;">?</li>
+            </ul>
+        </div>
+        <div class = "row">
+            <ul>
+                <li id = "guess" style = "float:left;display:block;font-weight:bolder;font-size:medium;">Number of Guesses:</li>
+                <li id = "numberOfGuesses" style="display:block;float:left;font-size:medium;">10</li>
+            </ul>
+        </div>
+        <div class = "row">
+            <ul>
+                <li style = "float:left;display:block;font-weight:bolder;font-size:medium;">Your guesses so far:</li>
+                <li id = "yourGuesses" style="float:left;display:block;font-size:medium;"></li>
+            </ul>
+        </div>
+    </div>
+    <!--Jquery for the website-->
+    <script type = "text/javascript">
+        //add a the ready document function here for preload functions
+        $(document).ready(function(){
+            //#1 Task: create an array of the alphabet and make the computer choose a letter
+            var alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+            var computerChoose = alphabet[Math.floor(Math.random() * alphabet.length)];
+            //#2 Task: allow the player to choose a letterdd
+            $(document).keyup(function(e){
+                function endResult(){ 
+                    $("#numberOfGuesses").html(`<div>${10}<div>`);
+                    $("#computerChoice").html(`<div>${computerChoose}<div>`);
+                    $("#yourGuesses").empty();
+                    computerChoose = alphabet[Math.floor(Math.random() * alphabet.length)];
+                }
+                //#3 Task: Compare whether or not the user input vs the computer is correct
+                //then append to the appropiate divs whether or not who won
+                var winScore = +$("#win-counter").text(); 
+                var loseScore = +$("#lose-counter").text();
+                var guesses = +$("#numberOfGuesses").text();
+                var madeGuesses = $("#yourGuesses").text();
+                var userChoose = String.fromCharCode(e.charCode || e.keyCode).toLowerCase();
+                $("#yourGuesses").append(`<div style = "float:left; display:block;">${"&nbsp;&nbsp;&nbsp;" + userChoose + ","}<div>`);
+                if (userChoose == computerChoose){
+                    $("#win-counter").html(`<div>${winScore + 1}<div>`);
+                    endResult();
+                }else{
+                    if (guesses > 0){
+                        $("#numberOfGuesses").html(`<div>${guesses - 1}<div>`);
+                    }else{
+                        $("#lose-counter").html(`<div>${loseScore + 1}<div>`);
+                        endResult();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
